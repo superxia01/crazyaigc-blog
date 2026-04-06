@@ -7,7 +7,7 @@
     "category": "insights",
     "tags": ["AI落地", "行业趋势", "企业AI"],
     "author": "CRAZYAIGC",
-    "image": "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800&q=80",
+    "image": "https://raw.githubusercontent.com/superxia01/crazyaigc-blog/main/images/ai-divide-2026.svg",
     "featured": true
   },
   {
@@ -18,7 +18,7 @@
     "category": "news",
     "tags": ["OpenClaw", "跨境电商", "AI实操课"],
     "author": "CRAZYAIGC",
-    "image": "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80",
+    "image": "https://raw.githubusercontent.com/superxia01/crazyaigc-blog/main/images/wenzhou-training.svg",
     "featured": true
   },
   {
@@ -29,7 +29,7 @@
     "category": "news",
     "tags": ["公司动态", "网站改版"],
     "author": "CRAZYAIGC",
-    "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80"
+    "image": "https://raw.githubusercontent.com/superxia01/crazyaigc-blog/main/images/website-relaunch.svg"
   },
   {
     "slug": "training/2026-04-05-why-ai-training-fails",
@@ -39,7 +39,7 @@
     "category": "training",
     "tags": ["AI培训", "企业转型"],
     "author": "CRAZYAIGC",
-    "image": "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800&q=80",
+    "image": "https://raw.githubusercontent.com/superxia01/crazyaigc-blog/main/images/ai-training-fails.svg",
     "featured": true
   },
   {
@@ -50,7 +50,7 @@
     "category": "training",
     "tags": ["AI培训", "企业转型"],
     "author": "CRAZYAIGC",
-    "image": "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&q=80",
+    "image": "https://raw.githubusercontent.com/superxia01/crazyaigc-blog/main/images/enterprise-ai-training.svg",
     "featured": true
   },
   {
@@ -61,7 +61,7 @@
     "category": "training",
     "tags": ["提示词工程", "AI技能"],
     "author": "CRAZYAIGC",
-    "image": "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&q=80",
+    "image": "https://raw.githubusercontent.com/superxia01/crazyaigc-blog/main/images/prompt-engineering.svg",
     "featured": true
   }
 ]

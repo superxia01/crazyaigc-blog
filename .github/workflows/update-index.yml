@@ -1,89 +1,40 @@
-name: Update Blog Index
-
-on:
-  push:
-    branches: [main]
-    paths:
-      - '**/*.md'
-      - '!README.md'
-  workflow_dispatch:
-
-jobs:
-  update-index:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Setup tools
-        run: |
-          sudo apt-get update && sudo apt-get install -y jq
-
-      - name: Generate index.json
-        run: |
-          echo "Generating blog index.json..."
-
-          # 创建空数组
-          echo '[]' > index.json
-
-          for file in $(find . -name "*.md" -not -path "./README.md" | sort); do
-            # 获取相对路径（去掉 ./ 和 .md）
-            slug=$(echo "$file" | sed 's|^\./||' | sed 's|\.md$||')
-
-            # 提取 frontmatter 字段
-            title=$(grep "^title:" "$file" | head -1 | sed 's/^title: *//' | tr -d '"')
-            desc=$(grep "^description:" "$file" | head -1 | sed 's/^description: *//' | tr -d '"')
-            date=$(grep "^date:" "$file" | head -1 | sed 's/^date: *//' | tr -d '"')
-            category=$(grep "^category:" "$file" | head -1 | sed 's/^category: *//' | tr -d '"')
-            author=$(grep "^author:" "$file" | head -1 | sed 's/^author: *//' | tr -d '"')
-            image=$(grep "^image:" "$file" | head -1 | sed 's/^image: *//' | tr -d '"')
-            featured=$(grep "^featured:" "$file" | head -1 | sed 's/^featured: *//')
-            tags=$(grep "^tags:" "$file" | head -1 | sed 's/^tags: *//')
-
-            # 构建 JSON 对象
-            jq -n \
-              --arg slug "$slug" \
-              --arg title "$title" \
-              --arg desc "$desc" \
-              --arg date "$date" \
-              --arg category "$category" \
-              --arg author "$author" \
-              --arg image "$image" \
-              --arg featured "$featured" \
-              --arg tags "$tags" \
-              '{
-                slug: $slug,
-                title: $title,
-                description: $desc,
-                date: $date,
-                category: $category,
-                author: $author,
-                image: (if $image == "" then null else $image end),
-                featured: (if $featured == "true" then true else false end),
-                tags: (if $tags == "" then [] else ($tags | split(",") | map(gsub("^ +| +$"; "")) end)
-              }' > /tmp/item.json
-
+          # 修改脚本：          # 检查图片文件是否存在
+          file_path=$(echo "$file" | sed 's|^\./||' | sed 's|^image: *//' | sed 's/^image: *//' | sed 's/^author: *//')
+          
+          if [ "$image" != "" ]; then
+            image_path=$(dirname "$file" | sed 's|.md$//')"/${blog_images}/$image_path"
+            # 复制图片
+            cp "$image_path" "$file"
+            echo "Copied $image to $blog_images"
+            # 如果 images 目录不存在，创建它
+            if [ ! -d "$blog_images" ]; then
+              mkdir -p "$blog_images"
+              for file in $(find . -name "*.md" -not -path "./README.md" | sort); do
+            # 复制图片
+            image_path="$blog_images/$(basename "$file" .md)"
+            echo "Copied $image to $blog_images"
             # 合并到 index.json
-            jq -s '. + [input]' index.json /tmp/item.json > /tmp/new_index.json
+            jq -s '. + [input]' index.json /tmp/new_index.json
             mv /tmp/new_index.json index.json
           done
 
-          # 按日期降序排序
-          jq 'sort_by(.date) | reverse' index.json > /tmp/sorted.json
-          mv /tmp/sorted.json index.json
-
+          
           echo "Generated index.json with $(jq 'length' index.json) posts"
-          cat index.json
 
-      - name: Commit changes
-        run: |
+          # Commit
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add index.json
-          git diff --quiet --cached || git commit -m "chore: auto-update index.json"
+          git add index.json blog_images/
+          git commit -m "feat: add blog images and auto-update index.json" || echo "No changes"
           git push
+        '
+
+        echo "Done!"
+        echo "Please push the changes to remote repository, then EdgeOne will自动部署。"
+        echo "等待几分钟后刷新 https://crazyaigc.com/blog 查看效果。"
+      '
+    },
+  ]'
+}' > /tmp/update-index.sh
+cat /tmp/update-index.sh
+chmod +x ~/Documents/GitHub/crazyaigc-blog/.github/workflows/update-index.yml ~/Documents/GitHub/crazyaigc-blog/.github/workflows/update-index.yml
